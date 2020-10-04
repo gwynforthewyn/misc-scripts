@@ -3,10 +3,9 @@
 import sys
 import os
 
-file = None
+file = sys.stdin
 
 # Ultimately we create a big old buffer and reverse it.
-buffer = list()
 
 def help():
     return """
@@ -27,7 +26,7 @@ try:
     if (sys.argv[1]):
         file = sys.argv[1]
         if (os.path.exists(file)):
-            buffer = open(file).readlines()
+            file = open(file)
         else:
             sys.stderr.write(help())
             sys.exit(2)
@@ -36,11 +35,9 @@ except IndexError:
 
 
 # If we haven't already filled buffer, assume we're reading from stdin.
-if not buffer:
-    buffer = sys.stdin.readlines()
 
-tac_buffer = list(reversed(buffer))
+tac = list(reversed(file.readlines()))
 
-for line in tac_buffer:
+for line in tac:
     if line:
         print(line, end = '')
